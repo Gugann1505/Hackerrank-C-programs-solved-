@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int lexicographical_sort(const char* a, const char* b) { return strcmp(a, b); }
+
+int sort_by_length(const char* a, const char* b) {
+    if (strlen(a) != strlen(b)) return strlen(a) - strlen(b);
+    return strcmp(a, b);
+}
+
+void string_sort(char** arr, const int cnt, int (*cmp_func)(const char* a, const char* b)) {
+    for (int i = 0; i < cnt; i++) {
+        for (int j = i + 1; j < cnt; j++) {
+            if (cmp_func(arr[i], arr[j]) > 0) {
+                char* temp = arr[i]; arr[i] = arr[j]; arr[j] = temp;
+            }
+        }
+    }
+}
+  
