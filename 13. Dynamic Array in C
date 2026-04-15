@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int total_shelves, total_queries;
+    scanf("%d %d", &total_shelves, &total_queries);
+    int** books = calloc(total_shelves, sizeof(int*));
+    int* pages_count = calloc(total_shelves, sizeof(int));
+
+    while (total_queries--) {
+        int type;
+        scanf("%d", &type);
+        if (type == 1) {
+            int x, y;
+            scanf("%d %d", &x, &y);
+            pages_count[x]++;
+            books[x] = realloc(books[x], pages_count[x] * sizeof(int));
+            books[x][pages_count[x] - 1] = y;
+        } else if (type == 2) {
+            int x, y;
+            scanf("%d %d", &x, &y);
+            printf("%d\n", books[x][y]);
+        } else {
+            int x;
+            scanf("%d", &x);
+            printf("%d\n", pages_count[x]);
+        }
+    }
+    return 0;
+}
