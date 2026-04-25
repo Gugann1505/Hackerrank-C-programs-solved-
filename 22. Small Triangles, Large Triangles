@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+struct triangle { int a, b, c; };
+
+// Function to calculate the area using Heron's formula
+double get_area(struct triangle tr) {
+    double p = (tr.a + tr.b + tr.c) / 2.0;
+    return sqrt(p * (p - tr.a) * (p - tr.b) * (p - tr.c));
+}
+
+// Function to sort triangles based on their area
+void sort_by_area(struct triangle* tr, int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (get_area(tr[j]) > get_area(tr[j+1])) {
+                struct triangle temp = tr[j];
+                tr[j] = tr[j+1];
+                tr[j+1] = temp;
+            }
+        }
+    }
+}
