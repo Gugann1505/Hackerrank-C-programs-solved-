@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char* get_word(char* text, int* length) {
+    char* word = malloc((*length + 1) * sizeof(char));
+    strncpy(word, text, *length);
+    word[*length] = '\0';
+    return word;
+}
+
+char**** get_document(char* text) {
+    char**** doc = malloc(sizeof(char***) * 5); // Max paragraphs
+    int p = 0, s = 0, w = 0;
+    
+    doc[p] = malloc(sizeof(char**) * 20); // Initial sentences
+    doc[p][s] = malloc(sizeof(char*) * 50); // Initial words
+    
+    char* start = text;
+    for (char* ptr = text; ; ptr++) {
+        if (*ptr == ' ' || *ptr == '.' || *ptr == '\n' || *ptr == '\0') {
+            int len = ptr - start;
+            if (len > 0) {
+                doc[p][s][w++] = get_word(start, &len);
+            }
+            if (*ptr == '.') {
+                s++;
+                doc[p][s] = malloc(sizeof(char*) * 50);
+                w = 0;
+            } else if (*ptr == '\n') {
+                p++;
+                doc[p] = malloc(sizeof(char**) * 20);
+                s = 0;
+            }
+            start = ptr + 1;
+        }
+        if (*ptr == '\0') break;
+    }
+    return doc;
+}
+
+char* kth_word_in_mth_sentence_of_nth_paragraph(char**** doc, int k, int m, int n) {
+    return doc[n-1][m-1][k-1];
+}
