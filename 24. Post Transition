@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void send_all_acceptable_packages(town* source, int source_office_index, town* target, int target_office_index) {
+    post_office *src = &source->offices[source_office_index];
+    post_office *tgt = &target->offices[target_office_index];
+    
+    for (int i = 0; i < src->packages_count; ) {
+        package p = src->packages[i];
+        if (p.weight >= tgt->min_weight && p.weight <= tgt->max_weight) {
+            // Add to target
+            tgt->packages = realloc(tgt->packages, sizeof(package) * (tgt->packages_count + 1));
+            tgt->packages[tgt->packages_count++] = p;
+            
+            // Remove from source
+            for (int j = i; j < src->packages_count - 1; j++) {
+                src->packages[j] = src->packages[j + 1];
+            }
+            src->packages_count--;
+            src->packages = realloc(src->packages, sizeof(package) * src->packages_count);
+        } else {
+            i++;
+        }
+    }
+}
