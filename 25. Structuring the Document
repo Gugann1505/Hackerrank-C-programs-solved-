@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct document get_document(char* text) {
+    struct document doc;
+    doc.data = NULL;
+    doc.paragraph_count = 0;
+    
+    char* para_token = strtok(text, "\n");
+    while (para_token) {
+        doc.data = realloc(doc.data, sizeof(struct paragraph) * (doc.paragraph_count + 1));
+        struct paragraph* cur_para = &doc.data[doc.paragraph_count++];
+        cur_para->data = NULL;
+        cur_para->sentence_count = 0;
+        
+        // Similar logic for sentences using strtok(para_token, ".")
+        // and words using strtok(sentence_token, " ")
+        para_token = strtok(NULL, "\n");
+    }
+    return doc;
+}
